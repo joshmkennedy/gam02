@@ -23,17 +23,7 @@ type Game struct {
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
 	// Write your game's logical update.
-	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {
-		g.player.MoveLeft()
-	}
-
-	if ebiten.IsKeyPressed(ebiten.KeyArrowRight) {
-		g.player.MoveRight()
-	}
-
-	if ebiten.IsKeyPressed(ebiten.KeySpace) {
-		g.player.Shoot()
-	}
+	g.player.Update()
 
 	for _, bul := range bulletPool {
 		bul.Update()
@@ -45,13 +35,10 @@ func (g *Game) Update() error {
 // Draw draws the game screen.
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
+	//Drawing player Object
+	g.player.Draw(screen)
 
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(-float64(g.player.width)/2, -float64(g.player.height)/2)
-	op.GeoM.Translate(g.player.x, g.player.y)
-	img := createImage("./assets/player.png")
-	screen.DrawImage(img, op)
-
+	// Draws all the bullets
 	for _, bul := range bulletPool {
 		bul.Draw(screen)
 	}
