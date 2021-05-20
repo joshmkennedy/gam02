@@ -23,27 +23,7 @@ func newBullet() *Bullet {
 	}
 }
 
-func (b *Bullet) Draw(screen *ebiten.Image) {
-	if !b.active {
-		return
-	}
-	bop := &ebiten.DrawImageOptions{}
-
-	bop.GeoM.Translate(4, 7)                      //sets origin center
-	bop.GeoM.Translate(b.x, (windowHeight - b.y)) //move by this amount
-	bimg := createImage("./assets/bullet.png")
-	screen.DrawImage(bimg, bop)
-}
-
-func (b *Bullet) Update() {
-	if !b.active {
-		return
-	}
-	b.y += bulletSpeed
-	if b.y <= 0 || b.y >= windowHeight {
-		b.Deactivate()
-	}
-}
+// ACTIONS
 
 func (b *Bullet) Deactivate() {
 	b.active = false
@@ -54,8 +34,9 @@ func (b *Bullet) Deactivate() {
 func (b *Bullet) Fire(x, y float64) {
 	b.active = true
 	b.x = x
-
 }
+
+// BULLET POOL FUNCTIONS
 
 var bulletPool []*Bullet
 
@@ -74,4 +55,28 @@ func bulletFromPool() (*Bullet, bool) {
 	}
 
 	return nil, false
+}
+
+// Draws Current State to Game
+func (b *Bullet) Draw(screen *ebiten.Image) {
+	if !b.active {
+		return
+	}
+	bop := &ebiten.DrawImageOptions{}
+
+	bop.GeoM.Translate(4, 7)                      //sets origin center
+	bop.GeoM.Translate(b.x, (windowHeight - b.y)) //move by this amount
+	bimg := createImage("./assets/bullet.png")
+	screen.DrawImage(bimg, bop)
+}
+
+// Updates State
+func (b *Bullet) Update() {
+	if !b.active {
+		return
+	}
+	b.y += bulletSpeed
+	if b.y <= 0 || b.y >= windowHeight {
+		b.Deactivate()
+	}
 }

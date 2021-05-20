@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"time"
+
+	"github.com/hajimehoshi/ebiten"
 )
 
 const (
@@ -19,6 +21,16 @@ type Player struct {
 	lastShot      time.Time
 }
 
+func newPlayer() *Player {
+	return &Player{
+		x:      float64(windowWidth)/2 - float64(playerWidth)/2,
+		y:      float64(windowHeight - playerHeight),
+		width:  playerWidth,
+		height: playerHeight,
+	}
+}
+
+//MOVEMENT
 func (p *Player) MoveLeft() {
 	if p.x+float64(p.width) <= 0 {
 		p.x = windowWidth
@@ -34,8 +46,10 @@ func (p *Player) MoveRight() {
 	}
 }
 
+//OTHER ACTIONS
 func (p *Player) Shoot() {
 	fmt.Println("Pew Pew")
+	// TODO this will be handles by Ship Object / Gun Object
 	if time.Since(p.lastShot) >= playerShotCoolDown {
 		//firing 2 bullets
 		if bul, ok := bulletFromPool(); ok {
@@ -50,4 +64,28 @@ func (p *Player) Shoot() {
 		p.lastShot = time.Now()
 	}
 
+}
+
+// Draws the Player at the current state
+func (p *Player) Draw(screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(-float64(p.width)/2, -float64(p.height)/2)
+	op.GeoM.Translate(p.x, p.y)
+	img := createImage("./assets/player.png")
+	screen.DrawImage(img, op)
+}
+
+//  Listens for state Changes
+func (p *Player) Update() {
+	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {
+		p.MoveLeft()
+	}
+
+	if ebiten.IsKeyPressed(ebiten.KeyArrowRight) {
+		p.MoveRight()
+	}
+
+	if ebiten.IsKeyPressed(ebiten.KeySpace) {
+		p.Shoot()
+	}
 }

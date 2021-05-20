@@ -22,9 +22,10 @@ type Game struct {
 // Update proceeds the game state.
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
-	// Write your game's logical update.
+	//Updates Player Object
 	g.player.Update()
 
+	//Updates all Bullets
 	for _, bul := range bulletPool {
 		bul.Update()
 	}
@@ -52,14 +53,12 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func NewGame() *Game {
-	initBulletPool()
+	// Create all objects that wee need
+
+	initBulletPool() // this just creates a global slice of Bullets
+
 	return &Game{
-		player: &Player{
-			x:      float64(windowWidth)/2 - float64(playerWidth)/2,
-			y:      float64(windowHeight - playerHeight),
-			width:  playerWidth,
-			height: playerHeight,
-		},
+		player: newPlayer(),
 	}
 }
 
