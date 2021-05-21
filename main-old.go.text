@@ -11,24 +11,29 @@ import (
 const (
 	windowWidth  = 560
 	windowHeight = 740
-	LEVEL        = "LEVEL"
-	MENU         = "MENU"
 )
 
 // Game implements ebiten.Game interface.
 type Game struct {
-	activeScreen string
-	level        *Level
-	// menu *Menu //TODO
+	count  int
+	player *Player
 }
 
 // Update proceeds the game state.
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
-	if g.activeScreen == LEVEL {
-		g.level.Update()
+	//Updates Player Object
+	g.player.Update()
+
+	//Updates the Enemies
+	for _, bul := range enemies {
+		bul.Update()
 	}
-	//TODO menu update
+
+	//Updates all Bullets
+	for _, bul := range bulletPool {
+		bul.Update()
+	}
 
 	return nil
 }
@@ -36,10 +41,18 @@ func (g *Game) Update() error {
 // Draw draws the game screen.
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
-	if g.activeScreen == LEVEL {
-		g.level.Draw()
+	//Drawing player Object
+	g.player.Draw(screen)
+
+	for _, enemy := range enemies {
+		enemy.Draw(screen)
 	}
-	//TODO menu draw
+
+	// Draws all the bullets
+	for _, bul := range bulletPool {
+		bul.Draw(screen)
+	}
+
 }
 
 // Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.
@@ -49,9 +62,12 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func NewGame() *Game {
+	// Create all objects that wee need
+
+	initBulletPool() // this just creates a global slice of Bullets
+	initEnemies()
 	return &Game{
-		activeScreen: LEVEL,
-		level:        newLevel(),
+		player: newPlayer(),
 	}
 }
 
@@ -67,7 +83,6 @@ func main() {
 	}
 }
 
-// TODO: Move to utils
 func createImage(path string) *ebiten.Image {
 	imageFromFile, err := os.Open(path)
 	if err != nil {
