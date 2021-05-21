@@ -37,7 +37,7 @@ func (g *Game) Update() error {
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
 	if g.activeScreen == LEVEL {
-		g.level.Draw()
+		g.level.Draw(screen)
 	}
 	//TODO menu draw
 }
