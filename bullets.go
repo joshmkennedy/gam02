@@ -79,4 +79,5 @@ func (b *Bullet) Update() {
 	if b.y <= 0 || b.y >= windowHeight {
 		b.Deactivate()
 	}
+
 }

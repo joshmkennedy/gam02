@@ -25,6 +25,11 @@ func (g *Game) Update() error {
 	//Updates Player Object
 	g.player.Update()
 
+	//Updates the Enemies
+	for _, bul := range enemies {
+		bul.Update()
+	}
+
 	//Updates all Bullets
 	for _, bul := range bulletPool {
 		bul.Update()
@@ -38,6 +43,10 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	//Drawing player Object
 	g.player.Draw(screen)
+
+	for _, enemy := range enemies {
+		enemy.Draw(screen)
+	}
 
 	// Draws all the bullets
 	for _, bul := range bulletPool {
@@ -56,7 +65,7 @@ func NewGame() *Game {
 	// Create all objects that wee need
 
 	initBulletPool() // this just creates a global slice of Bullets
-
+	initEnemies()
 	return &Game{
 		player: newPlayer(),
 	}
