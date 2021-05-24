@@ -35,6 +35,7 @@ func newPlayer() *Object {
 	return player
 }
 
+// TODO MOVEMENT COMPONENT
 //MOVEMENT
 // func (p *Player) MoveLeft() {
 // 	if p.x+float64(p.width) <= 0 {
@@ -51,6 +52,7 @@ func newPlayer() *Object {
 // 	}
 // }
 
+// TODO GUN COMPONENT
 // //OTHER ACTIONS
 // func (p *Player) Shoot() {
 // 	fmt.Println("Pew Pew")
@@ -72,6 +74,7 @@ func newPlayer() *Object {
 // }
 
 // // Draws the Player at the current state
+// TODO PLAYER SKIN COMPONENT
 // func (p *Player) Draw(screen *ebiten.Image) {
 // 	op := &ebiten.DrawImageOptions{}
 // 	op.GeoM.Translate(-float64(p.width)/2, -float64(p.height)/2)
@@ -80,6 +83,7 @@ func newPlayer() *Object {
 // 	screen.DrawImage(img, op)
 // }
 
+//TODO  PlayerKeyboardController Component
 // //  Listens for state Changes
 // func (p *Player) Update() {
 // 	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {
