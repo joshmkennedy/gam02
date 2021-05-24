@@ -32,25 +32,11 @@ func newPlayer() *Object {
 	player.isActive = true
 	player.texture = createImage("./assets/player.png")
 
+	keyboardMover := newKeyboardMover(player, playerSpeed)
+	player.addComponent(keyboardMover)
+
 	return player
 }
-
-// TODO MOVEMENT COMPONENT
-//MOVEMENT
-// func (p *Player) MoveLeft() {
-// 	if p.x+float64(p.width) <= 0 {
-// 		p.x = windowWidth
-// 	} else {
-// 		p.x -= playerSpeed
-// 	}
-// }
-// func (p *Player) MoveRight() {
-// 	if p.x > windowWidth {
-// 		p.x = 0
-// 	} else {
-// 		p.x += playerSpeed
-// 	}
-// }
 
 // TODO GUN COMPONENT
 // //OTHER ACTIONS
