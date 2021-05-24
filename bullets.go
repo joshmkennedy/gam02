@@ -9,47 +9,66 @@ const (
 	bulletCount         = 20
 )
 
-type Bullet struct {
-	x, y   float64
-	active bool
-	op     *ebiten.DrawImageOptions
+// type Bullet struct {
+// 	x, y   float64
+// 	active bool
+// 	op     *ebiten.DrawImageOptions
+// }
+
+func newBullet() *Object {
+	bullet := &Object{}
+	bullet.isActive = false
+	bullet.position.y = windowHeight - 100
+	bullet.texture = createImage("./assets/bullet.png")
+	bullet.tag = "BULLET"
+	bullet.width = 4
+	bullet.height = 7
+
+	bulletMover := newBulletMover(bullet)
+	bullet.addComponent(bulletMover)
+	return bullet
+
 }
 
-func newBullet() *Bullet {
-	return &Bullet{
-		active: false,
-		y:      100,
-		op:     &ebiten.DrawImageOptions{},
+type BulletMover struct {
+	parent      *Object
+	bulletSpeed float64
+}
+
+func newBulletMover(parent *Object) *BulletMover {
+	return &BulletMover{
+		parent:      parent,
+		bulletSpeed: bulletSpeed,
 	}
 }
 
 // ACTIONS
 
-func (b *Bullet) Deactivate() {
-	b.active = false
-	b.y = 100
-
+func (b *BulletMover) Deactivate() {
+	b.parent.isActive = false
+	b.parent.position.y = windowHeight - 100
 }
 
-func (b *Bullet) Fire(x, y float64) {
-	b.active = true
-	b.x = x
+func (b *BulletMover) Fire(x float64) {
+	b.parent.isActive = true
+	b.parent.position.x = x
 }
 
 // BULLET POOL FUNCTIONS
 
-var bulletPool []*Bullet
+var bulletPool []*Object
 
 func initBulletPool() {
 	for i := 0; i < bulletCount; i++ {
 		bul := newBullet()
 		bulletPool = append(bulletPool, bul)
+		Objects = append(Objects, bul)
 	}
 }
 
-func bulletFromPool() (*Bullet, bool) {
+func bulletFromPool() (*Object, bool) {
 	for _, bul := range bulletPool {
-		if !bul.active {
+		if !bul.isActive {
 			return bul, true
 		}
 	}
@@ -58,26 +77,21 @@ func bulletFromPool() (*Bullet, bool) {
 }
 
 // Draws Current State to Game
-func (b *Bullet) Draw(screen *ebiten.Image) {
-	if !b.active {
-		return
-	}
-	bop := &ebiten.DrawImageOptions{}
-
-	bop.GeoM.Translate(4, 7)                      //sets origin center
-	bop.GeoM.Translate(b.x, (windowHeight - b.y)) //move by this amount
-	bimg := createImage("./assets/bullet.png")
-	screen.DrawImage(bimg, bop)
+func (b *BulletMover) OnDraw(screen *ebiten.Image) error {
+	return nil
+}
+func (b *BulletMover) OnCollision(other *Object) error {
+	return nil
 }
 
 // Updates State
-func (b *Bullet) Update() {
-	if !b.active {
-		return
+func (b *BulletMover) OnUpdate() error {
+	if !b.parent.isActive {
+		return nil
 	}
-	b.y += bulletSpeed
-	if b.y <= 0 || b.y >= windowHeight {
+	b.parent.position.y -= bulletSpeed
+	if b.parent.position.y <= 0 || b.parent.position.y >= windowHeight {
 		b.Deactivate()
 	}
-
+	return nil
 }

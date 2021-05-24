@@ -47,5 +47,6 @@ func addAllObjects() {
 	// enemies
 
 	//bullets
+	initBulletPool()
 
 }

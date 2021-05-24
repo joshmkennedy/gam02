@@ -21,7 +21,9 @@ func newKeyboardShooter(o *Object, cooldown time.Duration) *KeyboardShooter {
 }
 
 func (shooter *KeyboardShooter) OnUpdate() error {
-
+	if ebiten.IsKeyPressed(ebiten.KeySpace) {
+		shooter.Shoot()
+	}
 	return nil
 }
 func (shooter *KeyboardShooter) OnDraw(screen *ebiten.Image) error {
@@ -38,12 +40,14 @@ func (shooter *KeyboardShooter) Shoot() error {
 	if time.Since(shooter.lastShot) >= shooter.cooldown {
 		//firing 2 bullets
 		if bul, ok := bulletFromPool(); ok {
-			bul.Fire(shooter.parent.position.x, shooter.parent.position.y)
+			bul.position.x = shooter.parent.position.x
+			bul.isActive = true
 			fmt.Println(bul)
 
 		}
 		if bul, ok := bulletFromPool(); ok {
-			bul.Fire(shooter.parent.position.x-25, shooter.parent.position.y)
+			bul.position.x = shooter.parent.position.x - 25
+			bul.isActive = true
 			fmt.Println(bul)
 		}
 		shooter.lastShot = time.Now()

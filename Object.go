@@ -37,6 +37,9 @@ func addObject(o *Object) {
 }
 
 func (o *Object) Draw(screen *ebiten.Image) error {
+	if !o.isActive {
+		return nil
+	}
 	// temporary
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-float64(o.width)/2, -float64(o.height)/2)
@@ -53,6 +56,9 @@ func (o *Object) Draw(screen *ebiten.Image) error {
 }
 
 func (o *Object) Update() error {
+	if !o.isActive {
+		return nil
+	}
 	for _, component := range o.components {
 		err := component.OnUpdate()
 		if err != nil {

@@ -35,6 +35,9 @@ func newPlayer() *Object {
 	keyboardMover := newKeyboardMover(player, playerSpeed)
 	player.addComponent(keyboardMover)
 
+	keyboardShooter := newKeyboardShooter(player, playerShotCoolDown)
+	player.addComponent((keyboardShooter))
+
 	return player
 }
 
