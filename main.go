@@ -20,6 +20,7 @@ type Game struct {
 	activeScreen string
 	level        *Level
 	// menu *Menu //TODO
+	// playerData *PlayerData //TODO
 }
 
 // Update proceeds the game state.
@@ -38,6 +39,9 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	if g.activeScreen == LEVEL {
 		g.level.Draw(screen)
+		for _, o := range Objects {
+			fmt.Println(*o)
+		}
 	}
 	//TODO menu draw
 }
