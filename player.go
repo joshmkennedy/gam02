@@ -11,13 +11,6 @@ const (
 	playerShotCoolDown = time.Millisecond * 250
 )
 
-//the player
-// type Player struct {
-// 	x, y          float64
-// 	width, height float64
-// 	lastShot      time.Time
-// }
-
 func newPlayer() *Object {
 	player := &Object{}
 	player.position = Vector{

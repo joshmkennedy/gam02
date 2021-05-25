@@ -12,13 +12,6 @@ const (
 	enemyCount = 6
 )
 
-//the enemy
-type Enemy struct {
-	x, y          float64
-	width, height float64
-	active        bool
-}
-
 func newEnemy(x, y float64) *Object {
 	enemy := &Object{}
 	enemy.position = Vector{
