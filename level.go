@@ -35,7 +35,7 @@ func (l *Level) Update() {
 
 func (l *Level) Draw(screen *ebiten.Image) {
 
-	for _, object := range l.objects {
+	for _, object := range Objects {
 		object.Draw(screen)
 	}
 }
@@ -45,6 +45,7 @@ func addAllObjects() {
 	addObject(newPlayer())
 
 	// enemies
+	initEnemies()
 
 	//bullets
 	initBulletPool()

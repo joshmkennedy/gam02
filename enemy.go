@@ -19,52 +19,57 @@ type Enemy struct {
 	active        bool
 }
 
-func newEnemy(x, y float64) *Enemy {
-	return &Enemy{
-		x:      x,
-		y:      y,
-		width:  enemyWidth,
-		height: enemyHeight,
-		active: true,
+func newEnemy(x, y float64) *Object {
+	enemy := &Object{}
+	enemy.position = Vector{
+		x: x,
+		y: y,
 	}
+	enemy.width = enemyWidth
+	enemy.height = enemyHeight
+	enemy.isActive = true
+	enemy.texture = createImage("./assets/enemy.png")
+	enemy.tag = "ENEMY"
+	return enemy
 }
 
 //MOVEMENT
+type HitBox struct {
+	parent *Object
+}
+
+func newHitBox(parent *Object) *HitBox {
+	return &HitBox{
+		parent: parent,
+	}
+}
 
 //OTHER ACTIONS
 
-func (e *Enemy) Collide() {
-	e.active = false
+func (hb *HitBox) OnCollision(other *Object) error {
+	hb.parent.isActive = false
+	return nil
 }
 
 // Draws the Enemy at the current state
-func (e *Enemy) Draw(screen *ebiten.Image) {
-	if !e.active {
-		return
-	}
-
-	op := &ebiten.DrawImageOptions{}
-
-	op.GeoM.Translate(float64(e.width)/2, float64(e.height)/2)
-	op.GeoM.Translate(e.x, e.y)
-
-	img := createImage("./assets/enemy.png")
-	screen.DrawImage(img, op)
+func (hb *HitBox) OnDraw(screen *ebiten.Image) error {
+	return nil
 }
 
 //  Listens for state Changes
-func (e *Enemy) Update() {
-	if !e.active {
-		return
+func (hb *HitBox) OnUpdate() error {
+	if !hb.parent.isActive {
+		return nil
 	}
-
+	return nil
 }
 
-var enemies []*Enemy
+var enemies []*Object
 
 func initEnemies() {
 	for i := 0; i <= enemyCount; i++ {
-		enemy := newEnemy(float64(i)*enemyWidth+(windowWidth/3), float64(i%2)*playerHeight)
+		enemy := newEnemy(float64(i)*enemyWidth*3+(enemyWidth*2), float64(i%2)*playerHeight+playerHeight)
 		enemies = append(enemies, enemy)
+		Objects = append(Objects, enemy)
 	}
 }
