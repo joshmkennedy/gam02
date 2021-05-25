@@ -25,7 +25,7 @@ func newBullet() *Object {
 
 	col := Circle{
 		center: bullet.position,
-		radius: 50,
+		radius: 6,
 	}
 	bullet.collisions = append(bullet.collisions, col)
 

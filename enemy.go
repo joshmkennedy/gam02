@@ -30,7 +30,7 @@ func newEnemy(x, y float64) *Object {
 	enemy.addComponent(enemyHitBox)
 	col := Circle{
 		center: enemy.position,
-		radius: 38,
+		radius: 16,
 	}
 	enemy.collisions = append(enemy.collisions, col)
 
