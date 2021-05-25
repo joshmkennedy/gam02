@@ -68,7 +68,7 @@ func (o *Object) Update() error {
 	return nil
 }
 
-func (o *Object) collision(other *Object) error {
+func (o *Object) Collision(other *Object) error {
 	for _, component := range o.components {
 		err := component.OnCollision(other)
 		if err != nil {
