@@ -9,12 +9,6 @@ const (
 	bulletCount         = 20
 )
 
-// type Bullet struct {
-// 	x, y   float64
-// 	active bool
-// 	op     *ebiten.DrawImageOptions
-// }
-
 func newBullet() *Object {
 	bullet := &Object{}
 	bullet.isActive = false
