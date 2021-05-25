@@ -31,6 +31,8 @@ func (l *Level) Update() {
 	for _, object := range Objects {
 		object.Update()
 	}
+
+	checkForCollions()
 }
 
 func (l *Level) Draw(screen *ebiten.Image) {

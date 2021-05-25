@@ -39,9 +39,6 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	if g.activeScreen == LEVEL {
 		g.level.Draw(screen)
-		for _, o := range Objects {
-			fmt.Println(*o)
-		}
 	}
 	//TODO menu draw
 }

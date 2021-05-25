@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/hajimehoshi/ebiten"
 )
 
@@ -20,6 +22,13 @@ func newBullet() *Object {
 
 	bulletMover := newBulletMover(bullet)
 	bullet.addComponent(bulletMover)
+
+	col := Circle{
+		center: bullet.position,
+		radius: 50,
+	}
+	bullet.collisions = append(bullet.collisions, col)
+
 	return bullet
 
 }
@@ -75,6 +84,9 @@ func (b *BulletMover) OnDraw(screen *ebiten.Image) error {
 	return nil
 }
 func (b *BulletMover) OnCollision(other *Object) error {
+	if other.tag != "BULLET" {
+		fmt.Println(other)
+	}
 	return nil
 }
 
@@ -84,8 +96,12 @@ func (b *BulletMover) OnUpdate() error {
 		return nil
 	}
 	b.parent.position.y -= bulletSpeed
+
 	if b.parent.position.y <= 0 || b.parent.position.y >= windowHeight {
 		b.Deactivate()
 	}
+
+	b.parent.collisions[0].center = b.parent.position
+
 	return nil
 }

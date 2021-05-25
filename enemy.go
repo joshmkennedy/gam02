@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/hajimehoshi/ebiten"
 )
 
@@ -23,6 +25,15 @@ func newEnemy(x, y float64) *Object {
 	enemy.isActive = true
 	enemy.texture = createImage("./assets/enemy.png")
 	enemy.tag = "ENEMY"
+
+	enemyHitBox := newHitBox(enemy)
+	enemy.addComponent(enemyHitBox)
+	col := Circle{
+		center: enemy.position,
+		radius: 38,
+	}
+	enemy.collisions = append(enemy.collisions, col)
+
 	return enemy
 }
 
@@ -38,9 +49,11 @@ func newHitBox(parent *Object) *HitBox {
 }
 
 //OTHER ACTIONS
-
 func (hb *HitBox) OnCollision(other *Object) error {
-	hb.parent.isActive = false
+	fmt.Println(hb.parent.tag)
+	if other.tag == "BULLET" {
+		hb.parent.isActive = false
+	}
 	return nil
 }
 
@@ -54,6 +67,7 @@ func (hb *HitBox) OnUpdate() error {
 	if !hb.parent.isActive {
 		return nil
 	}
+
 	return nil
 }
 
